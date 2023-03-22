@@ -9,3 +9,10 @@ class CodeSandboxRunner:
     """Executes Python code in an isolated subprocess sandbox."""
     def __init__(self):
         pass
+
+    def evaluate(self, candidate_code: str, test_suite: str) -> Dict[str, Any]:
+        with tempfile.TemporaryDirectory(prefix="sandbox_run_") as tmpdir:
+            solution_file = os.path.join(tmpdir, "solution.py")
+            with open(solution_file, "w", encoding="utf-8") as f:
+                f.write(candidate_code)
+            return {}
