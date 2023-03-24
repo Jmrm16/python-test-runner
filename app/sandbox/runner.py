@@ -13,6 +13,11 @@ class CodeSandboxRunner:
     def evaluate(self, candidate_code: str, test_suite: str) -> Dict[str, Any]:
         with tempfile.TemporaryDirectory(prefix="sandbox_run_") as tmpdir:
             solution_file = os.path.join(tmpdir, "solution.py")
+            test_file = os.path.join(tmpdir, "test_solution.py")
+
             with open(solution_file, "w", encoding="utf-8") as f:
                 f.write(candidate_code)
+
+            with open(test_file, "w", encoding="utf-8") as f:
+                f.write("from solution import *\n\n" + test_suite)
             return {}
