@@ -20,4 +20,7 @@ class CodeSandboxRunner:
 
             with open(test_file, "w", encoding="utf-8") as f:
                 f.write("from solution import *\n\n" + test_suite)
-            return {}
+
+            cmd = [sys.executable, "-m", "pytest", test_file, "-v", "--tb=short", "-p", "no:cacheprovider"]
+            proc = subprocess.run(cmd, cwd=tmpdir)
+            return {"passed": proc.returncode == 0, "exit_code": proc.returncode}
