@@ -22,5 +22,5 @@ class CodeSandboxRunner:
                 f.write("from solution import *\n\n" + test_suite)
 
             cmd = [sys.executable, "-m", "pytest", test_file, "-v", "--tb=short", "-p", "no:cacheprovider"]
-            proc = subprocess.run(cmd, cwd=tmpdir)
-            return {"passed": proc.returncode == 0, "exit_code": proc.returncode}
+            proc = subprocess.run(cmd, cwd=tmpdir, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            return {"passed": proc.returncode == 0, "exit_code": proc.returncode, "stdout": proc.stdout, "stderr": proc.stderr}
