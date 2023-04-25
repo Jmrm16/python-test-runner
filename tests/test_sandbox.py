@@ -18,3 +18,18 @@ def test_add_negative_numbers():
     assert result["exit_code"] == 0
     assert result["timed_out"] is False
     assert "PASSED" in result["stdout"]
+
+def test_sandbox_detects_test_failures():
+    runner = CodeSandboxRunner(timeout_seconds=5.0)
+    code = """
+def multiply(a, b):
+    return a + b  # Bug: addition instead of multiplication
+"""
+    tests = """
+def test_multiply():
+    assert multiply(2, 4) == 8
+"""
+    result = runner.evaluate(code, tests)
+    assert result["passed"] is False
+    assert result["exit_code"] != 0
+    assert "FAILED" in result["stdout"]
